@@ -12,4 +12,4 @@ Jesús Marcos Torero, @jesusmarcostorero.
 
 ## Objetivos del trabajo
 
-Lista de los objetivos que se persiguen con el trabajo propuesto.
+Saber manipular cadenas de caracteres variables, utilizar ficheros y automatizar el proceso de codificación y decodificación.
