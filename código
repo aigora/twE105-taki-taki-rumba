@@ -1,0 +1,67 @@
+//CÓDIGO ENIGMA
+
+#include <stdio.h>
+
+void main()
+{
+	char s=0;
+	int a=0, b=0, c=0;
+	printf ("Escribe las tres claves (a[0,9], b[0,9], c[1,3].)\n");
+	
+	printf ("a= ");
+	scanf ("%d", &a);
+	while (a<0 || a>9)
+	{
+		printf ("numero no valido\na= ");
+		scanf ("%d", &a);
+	}
+	
+	printf ("b= ");
+	scanf ("%d", &b);
+	while (b<0 || b>9)
+	{
+		printf ("numero no valido\nb=");
+		scanf ("%d", &b);
+	}
+	
+	printf ("c= ");
+	scanf ("%d", &c);
+	while (c<1 || c>3)
+	{
+		printf ("numero no valido\nc=");
+		scanf ("%d", &c);
+	}
+	printf ("posicion inicial de las ruedas:\n (%d, %d, %d)\n", c, b, a);
+	printf ("***************inicio del programa*****************\n");
+	printf ("teclee cualquier tecla para iniciar\n");
+	scanf ("%c\n", &s);
+	while (1)
+	{
+			a ++;
+			if (a == 10)
+			{
+				a = 0;
+				b ++;
+				if (b == 10)
+				{
+					b = 0;
+					c ++;
+					if (c == 4)
+					{
+						c = 1;
+					}
+				}
+			}
+		s = (s+a+b)*c;
+		if (s > '~')
+		{
+			s = s - ('~'- ' ');
+		}
+		printf ("(%d, %d, %d)\n", c, b, a);
+		printf (" new= %c\n", s);
+		scanf ("%c\n", &s);
+	}
+	
+	
+	
+}
