@@ -9,7 +9,7 @@ while (1)
 	int o=0;
 	int s=0;
 	int a=0, b=0, c=0;
-	while (o<1||o>2)//elección del método
+	while (o<1||o>2)//elecciÃ³n del mÃ©todo
 		{
 		printf("escoja una opcion:\n 1.cifrar \t 2.descifrar\n");
 		scanf("%i", &o);
@@ -20,12 +20,12 @@ while (1)
 		}
 	switch(o)
 	{
-	case 1://opción de cifrar
+	case 1://opciÃ³n de cifrar
 		printf("has escogido la opcion de cifrar\n");
 			printf ("Escribe las tres claves (a[0,9], b[0,9], c[1,3].)\n");
 			printf ("a= ");
 			scanf ("%d", &a);
-			while (a<0 || a>9)//elección del primer parámetro
+			while (a<0 || a>9)//elecciÃ³n del primer parÃ¡metro
 			{
 				printf ("numero no valido\na= ");
 				scanf ("%d", &a);
@@ -33,7 +33,7 @@ while (1)
 	
 			printf ("b= ");
 			scanf ("%d", &b);
-			while (b<0 || b>9)//elección del segundo parámetro
+			while (b<0 || b>9)//elecciÃ³n del segundo parÃ¡metro
 			{
 				printf ("numero no valido\nb=");
 				scanf ("%d", &b);
@@ -41,7 +41,7 @@ while (1)
 	
 			printf ("c= ");
 			scanf ("%d", &c);
-			while (c<1 || c>3)//elección del tercer parámetro
+			while (c<1 || c>3)//elecciÃ³n del tercer parÃ¡metro
 			{
 				printf ("numero no valido\nc=");
 				scanf ("%d", &c);
@@ -52,10 +52,10 @@ while (1)
 	scanf ("%c\n", &s);
 	while (1)//bucle de pruebas
 	{
-		/*Las tres ruedas parten  de una posición inicial, y por cada 
+		/*Las tres ruedas parten  de una posiciÃ³n inicial, y por cada 
 		letra que se avance, la primera rueda suma un paso, hasta que 
-		llegue a su última posición, que avanzará la segunda un paso, y
-		así sucesivamente.*/
+		llegue a su Ãºltima posiciÃ³n, que avanzarÃ¡ la segunda un paso, y
+		asÃ­ sucesivamente.*/
 			a ++;
 			if (a == 10)
 			{
@@ -76,7 +76,7 @@ while (1)
 		multiplicada por el tercer valor de la tercera rueda.*/
 		while (s > 126)
 		{
-			s = s - (126);//Devolver el número entre 32 y 127 para que tenga sentido
+			s = s - (126);//Devolver el nÃºmero entre 32 y 127 para que tenga sentido
 		}
 		if (s < 32)
 		{
@@ -88,7 +88,7 @@ while (1)
 	}
 			
 	break;
-	case 2://opción de descifrar.
+	case 2://opciÃ³n de descifrar.
 				printf("has escogido la opcion de descifrar\n");
 					printf ("Escribe las tres claves (a[0,9], b[0,9], c[1,3].)\n");
 			
