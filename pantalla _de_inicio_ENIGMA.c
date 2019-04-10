@@ -9,7 +9,7 @@ while (1)
 	int o=0;
 	int s=0;
 	int a=0, b=0, c=0;
-	while (o<1||o>2)
+	while (o<1||o>2)//elección del método
 		{
 		printf("escoja una opcion:\n 1.cifrar \t 2.descifrar\n");
 		scanf("%i", &o);
@@ -20,12 +20,12 @@ while (1)
 		}
 	switch(o)
 	{
-	case 1:
+	case 1://opción de cifrar
 		printf("has escogido la opcion de cifrar\n");
 			printf ("Escribe las tres claves (a[0,9], b[0,9], c[1,3].)\n");
 			printf ("a= ");
 			scanf ("%d", &a);
-			while (a<0 || a>9)
+			while (a<0 || a>9)//elección del primer parámetro
 			{
 				printf ("numero no valido\na= ");
 				scanf ("%d", &a);
@@ -33,7 +33,7 @@ while (1)
 	
 			printf ("b= ");
 			scanf ("%d", &b);
-			while (b<0 || b>9)
+			while (b<0 || b>9)//elección del segundo parámetro
 			{
 				printf ("numero no valido\nb=");
 				scanf ("%d", &b);
@@ -41,7 +41,7 @@ while (1)
 	
 			printf ("c= ");
 			scanf ("%d", &c);
-			while (c<1 || c>3)
+			while (c<1 || c>3)//elección del tercer parámetro
 			{
 				printf ("numero no valido\nc=");
 				scanf ("%d", &c);
@@ -50,8 +50,12 @@ while (1)
 			
 		printf ("teclee cualquier tecla para iniciar\n");
 	scanf ("%c\n", &s);
-	while (1)
+	while (1)//bucle de pruebas
 	{
+		/*Las tres ruedas parten  de una posición inicial, y por cada 
+		letra que se avance, la primera rueda suma un paso, hasta que 
+		llegue a su última posición, que avanzará la segunda un paso, y
+		así sucesivamente.*/
 			a ++;
 			if (a == 10)
 			{
@@ -67,10 +71,12 @@ while (1)
 					}
 				}
 			}
-		s = (s+a+b)*c; 
+		s = (s+a+b)*c;
+		/*Cada letra es sumada a los valores de las priemras dos ruedas y
+		multiplicada por el tercer valor de la tercera rueda.*/
 		while (s > 126)
 		{
-			s = s - (126);
+			s = s - (126);//Devolver el número entre 32 y 127 para que tenga sentido
 		}
 		if (s < 32)
 		{
@@ -82,7 +88,7 @@ while (1)
 	}
 			
 	break;
-	case 2:
+	case 2://opción de descifrar.
 				printf("has escogido la opcion de descifrar\n");
 					printf ("Escribe las tres claves (a[0,9], b[0,9], c[1,3].)\n");
 			
