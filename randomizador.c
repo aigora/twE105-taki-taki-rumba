@@ -51,7 +51,7 @@ int main(){
 								comp[d]=rn;
 								rc=(char)rn;//convertimos el numero en letra//
 								printf("%i %c\n",rc, rc);
-								fprintf(pf,"%c ", rc);
+								fprintf(pf,"%c", rc);
 							}	
 						}
 					}	
@@ -66,22 +66,3 @@ int main(){
 	
 
 
-/*
-#include <stdio.h>
-#include <stdlib.h>
-#include <time.h>
-int main(int argc, char *argv[])
-{
-    char randChar = ' ';
-    int counter = 0;
-    int randNum = 0;
-    srand(time(NULL));
-    for (counter = 0; counter < 10; counter++)
-    {
-    	randNum = 26 * (rand() / (RAND_MAX +1.0));
-        randNum = randNum + 97;
-        randChar = (char) randNum;
-		printf ("Random char: %c\n", randChar);
-      }
-  }
-  */
