@@ -1,23 +1,36 @@
-#include<stdio.h>
-#include<stdlib.h>
-#include<time.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+#include <string.h>
+
+typedef struct//estructura de los alfabetos
+{
+	char abecedario[26];
+}alfa;
+
+
 void main()
 {
-	FILE *alfabeto;
-	char *ruedas[9][9][3][26];
+	int i;
+	char abecedario[26];
 	char rueda1[26];
 	printf ("iniciando secuencia aleatoria de alfabeto.\n");
 	alfabetos();//escribe al empezar la secuencia aleatoria de los alfabetos en el fichero
 	printf ("secuencia realizada con exito.\n");
-	alfabeto= fopen("alfabetos.odt", "r");
-	
-	fscanf(alfabeto, "%26s", rueda1);//guarda la primera rueda en un char
-	printf ("Rueda 1: %26s\n", rueda1);
-	fclose (alfabetos);
+	copia();
 	
 }
 
-
+void copia ()
+{
+	char cadena[26];
+	int i;
+	FILE *pf;
+	pf= open("alfabetos.odt", "r");
+	fscanf (pf, "%26s", cadena);
+	printf("%26s\n", cadena);
+	fclose(pf);
+}
 int alfabetos()
 {
 	FILE *pf;
@@ -72,7 +85,7 @@ int alfabetos()
 							}	
 						}
 					}
-				fprintf (pf, "\n", rc);	
+					fprintf(pf, ";", rc);
 				}
 			}
 		}
