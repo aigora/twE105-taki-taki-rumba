@@ -56,12 +56,14 @@ int rand_alfabetos()
 /*escribe un numero determinado de alfabetos aleatorios en un fichero
 para leerlos o copiarlos a una matriz mas tarde*/
 {
+	
 	FILE *pf;
 	int rn,rc;//variables para numeros aleatrorios
 	int a; //variable para el bucle de matrices
 	int d; //variable para el bucle de alfabetos
 	int comp[25]; //matriz auxiliar de comparación de igualdad
 	int i,n; //variables auxiliares
+	printf ("Generando alfabeto...\n");
 	srand((unsigned)time(NULL));
 	pf=fopen("alfabetos.odt","w");
 	if(pf==NULL){
@@ -106,6 +108,7 @@ para leerlos o copiarlos a una matriz mas tarde*/
 		}
 		fclose(pf);
 	}
+	printf ("Alfabeto generado con exito");
 	return(0);	
 }
 
