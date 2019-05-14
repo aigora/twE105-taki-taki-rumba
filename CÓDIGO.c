@@ -2,7 +2,7 @@
 #include<stdlib.h>
 #include<time.h>
 #include <string.h>
-#define X 100
+#define X 1000
 
 typedef struct//la unidad del vector de alfabetos
 {
@@ -20,7 +20,7 @@ int main()
 		int s=0;
 		while (o<1||o>2)//eleccion del metodo
 			{
-			printf("escoja una opcion:\n 1.cifrar \t 2.descifrar\n");
+			printf("escoja una opcion:\n 1.cifrar			2.descifrar\n");
 			scanf("%i", &o);
 			if (o<1||o>2)
 				{
@@ -33,7 +33,7 @@ int main()
 			printf("has escogido la opcion de cifrar\n");
 			while (s<1||s>2)
 			{
-				printf("1. Generar nuevo alfabeto. \t2. Usar alfabeto exixtente\n");
+				printf("1. Generar nueva semilla. \t2. Usar semilla exixtente\n");
 				scanf ("%i", &s);
 				if (s<1||s>2)
 				{
@@ -41,9 +41,14 @@ int main()
 				}
 				if (s == 1)
 				{
+					printf ("Ok.\n");
 					rand_alfabetos();
 				}
-				code();	
+				if (s == 2)
+				{
+					printf ("Ok.\n");
+				}
+				code();//funcion que pide una frase y la trata y codifica
 			}
 			break;		
 		case 2://opcion de descifrar.
@@ -64,7 +69,7 @@ para leerlos o copiarlos a una matriz mas tarde*/
 	int d; //variable para el bucle de alfabetos
 	int comp[25]; //matriz auxiliar de comparación de igualdad
 	int i,n; //variables auxiliares
-	printf ("Generando alfabeto...\n");
+	printf ("Generando alfabetos...\n");
 	srand((unsigned)time(NULL));
 	pf=fopen("alfabetos.odt","w");
 	if(pf==NULL){
@@ -109,7 +114,7 @@ para leerlos o copiarlos a una matriz mas tarde*/
 		}
 		fclose(pf);
 	}
-	printf ("Alfabeto generado con exito.\n\n");
+	printf ("Alfabetos generados con exito.\n\n");
 	return(0);	
 }
 
@@ -128,49 +133,85 @@ correspondiente a su posición en el fichero*/
 }
 
 void code()
+/*abre el fichero donde estan guardados los alfabetos y los copia a la matriz segun el numero de letras del mensaje.
+Despues, una frase introducida es tratada y codificada por la funcion. 
+Una vez terminado el proceso, se pregunta al usuario si desea guardar el mensaje en un fichero por si quiere conservarlo*/
 {
-	char s[X];//mensaje
+	FILE *pd;
+	char s[X];//mensaje inicial
+	char ss[X];//mensaje codificado
 	int var = 'a'-'A';
 	int n;//posicion del alfabeto
-	int len=0;
-	int i=0;
-	int a=0;
-	int b;
+	int e=0;//variable para la eleccion de ficheros
+	int len=0;//valor del numero de letras
+	int i=0;//variable de bucle
+	int a=0;//variable de bucle
+	alfabeto vector;//alfabeto para copiar del fichero
+	alfabeto *pvector = &vector;//puntero al alfabeto
+	alfabeto matriz[X];//matriz de alfabetos
+	//primero, una frase es introducida por el usuario
 	printf ("\n");
-	printf ("introduce una frase\n");
-	scanf ("%[^88]s", s);
-	printf ("%s\n", s);
+	printf ("introduce una frase (maximo de letras: %d)\n", X);
+	printf ("ADVERTENCIA!! Debes usar el tabulador para indicar el final del mensaje.\n");
+	scanf ("%[^\t]s", s);
+	len = strlen(s);
+	//esta es la parte donde se manipula el mensaje
 	while (s[a] != '\0')
 	{
-		if (s[a]== ' ')
+		if (s[a]== ' ')//cambia los espacios por barras 
 		{
 			s[a] = '/';
 		}
+		if (s[a]>= 'A' && s[a]<= 'Z')//cambia las mayusculas por minusculas
+		{
+			s[a] = s[a] + var; 
+		}
 		a++;
 	}
-  	printf("%s\n", s); //Imprime el resultado
-	len = strlen(s);
-	printf ("%d\n", len);
-	alfabeto vector;//alfabeto para copiar del fichero
-	alfabeto *pvector = &vector;//puntero al alfabeto
-	alfabeto matriz[b];//matriz de alfabetos
-	for (i=0; i<b; i++)
+	//esta es la parte donde se copian los alfabetos a la matriz
+	for (i=0; i<len; i++)
 	{
 		copia (i, &vector);
 		strcpy (matriz[i].unidad, vector.unidad);
-		
 	}
-	
 	for (i=0; i<len; i++)
 	{
 		if (s[i]>='a' && s[i]<='z')//si la letra esta contenida en el rango del alfabeto, se codifica
 		{
 			n = s[i] - 97;
-			printf ("%c", matriz[i].unidad[n]);
+			ss[i] = matriz[i].unidad[n];
 		}
 		else //si la letra no esta contenida, se deja como esta
 		{
-			printf ("%c", s[i]);
+			ss[i]= s[i];
 		}
 	}
+	printf ("Mensaje codificado:%s\n", ss);
+	//esta es la parte donde se copia (o no) el mensaje a un fichero
+	printf ("desea guardar el mensaje en un fichero?\n");
+	while (e<1||e>2)
+		{
+			printf("1. Si.				2. No\n");
+			scanf ("%i", &e);
+			if (e<1||e>2)
+			{
+				printf ("opcion no valida\n");
+			}
+			if (e == 1)
+			{
+				printf ("guardando fichero...\n");
+				pd = fopen ("mensajes.txt", "w");
+				if(pd==NULL)
+				{
+					printf("Error de fichero\n");
+				}
+				fprintf (pd, "%s", ss);
+				printf ("fichero guardado con exito.\n");
+				fclose (pd);
+			}
+			if (e == 2)
+			{
+				printf ("Ok.\n");
+			}
+		}
 }
