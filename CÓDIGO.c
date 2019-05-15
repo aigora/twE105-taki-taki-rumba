@@ -9,9 +9,11 @@ typedef struct//la unidad del vector de alfabetos
 	char unidad[26];
 }alfabeto;
 
-void code();
+void code();//funcion de codificar
 
-void copia (int i, alfabeto *vector);
+void decode();//funcion de decodificar
+
+void copia (int i, alfabeto *vector); //funcion de copiar alfabetos
 
 int main()
 {
@@ -48,12 +50,13 @@ int main()
 				{
 					printf ("Ok.\n");
 				}
-				code();//funcion que pide una frase y la trata y codifica
+				code();//funcion que pide un mensahe y lo trata y codifica
 			}
 			break;		
 		case 2://opcion de descifrar.
 			printf("has escogido la opcion de descifrar\n");
-			
+			printf ("Se asume que utilizas la ultima semilla guardada en el fichero.\nSi no es asi, copia la nueva semilla en el fichero y vuelve al programa.\n");
+			decode();
 			break;
 		}
 }
@@ -80,7 +83,7 @@ para leerlos o copiarlos a una matriz mas tarde*/
 	{
 		for(a=0; a<X; a++)
 		{
-			for(d=0;d<25;d++)//aquí es donde se genera el alfabeto//
+			for(d=0;d<26;d++)//aquí es donde se genera el alfabeto//
 			{
 				n=0;
 				rn=rand();
@@ -122,13 +125,15 @@ void copia(int i, alfabeto *vector)
 /*devuelve segun el numero i que se le ponga el alfabeto
 correspondiente a su posición en el fichero*/
 {	
+	char aux[26];
 	FILE *pf;
 	pf = fopen ("alfabetos.odt", "r");
 	if (i > 0)//en el caso de un numero superior, la lectura avanza 26 char y empieza a leer desde alli.
 	{
 		fseek (pf, i*sizeof(char)*26, SEEK_SET);
 	}
-	fscanf(pf, "%26s", vector->unidad);
+	fscanf(pf, "%26s", aux);
+	strcpy (vector->unidad, aux);
 	fclose(pf);
 }
 
@@ -141,8 +146,9 @@ Una vez terminado el proceso, se pregunta al usuario si desea guardar el mensaje
 	char s[X];//mensaje inicial
 	char ss[X];//mensaje codificado
 	int var = 'a'-'A';
-	int n;//posicion del alfabeto
+	int n=0;//posicion del alfabeto
 	int e=0;//variable para la eleccion de ficheros
+	int h=0;//variable para la eleccion del metodo
 	int len=0;//valor del numero de letras
 	int i=0;//variable de bucle
 	int a=0;//variable de bucle
@@ -151,67 +157,195 @@ Una vez terminado el proceso, se pregunta al usuario si desea guardar el mensaje
 	alfabeto matriz[X];//matriz de alfabetos
 	//primero, una frase es introducida por el usuario
 	printf ("\n");
-	printf ("introduce una frase (maximo de letras: %d)\n", X);
-	printf ("ADVERTENCIA!! Debes usar el tabulador para indicar el final del mensaje.\n");
-	scanf ("%[^\t]s", s);
-	len = strlen(s);
-	//esta es la parte donde se manipula el mensaje
-	while (s[a] != '\0')
-	{
-		if (s[a]== ' ')//cambia los espacios por barras 
+	printf ("desea introducir el mensaje por el monitor o copiarlo desde un fichero?\n");
+	while (h<1||h>2)	
 		{
-			s[a] = '/';
-		}
-		if (s[a]>= 'A' && s[a]<= 'Z')//cambia las mayusculas por minusculas
-		{
-			s[a] = s[a] + var; 
-		}
-		a++;
-	}
-	//esta es la parte donde se copian los alfabetos a la matriz
-	for (i=0; i<len; i++)
-	{
-		copia (i, &vector);
-		strcpy (matriz[i].unidad, vector.unidad);
-	}
-	for (i=0; i<len; i++)
-	{
-		if (s[i]>='a' && s[i]<='z')//si la letra esta contenida en el rango del alfabeto, se codifica
-		{
-			n = s[i] - 97;
-			ss[i] = matriz[i].unidad[n];
-		}
-		else //si la letra no esta contenida, se deja como esta
-		{
-			ss[i]= s[i];
-		}
-	}
-	printf ("Mensaje codificado:%s\n", ss);
-	//esta es la parte donde se copia (o no) el mensaje a un fichero
-	printf ("desea guardar el mensaje en un fichero?\n");
-	while (e<1||e>2)
-		{
-			printf("1. Si.				2. No\n");
-			scanf ("%i", &e);
-			if (e<1||e>2)
+			printf("1. Escribir manual. \t2. Leer fichero.\n");
+			scanf ("%i", &h);
+			if (h<1||h>2)
 			{
 				printf ("opcion no valida\n");
 			}
-			if (e == 1)
+			if (h == 1)
 			{
-				printf ("guardando fichero...\n");
-				pd = fopen ("mensajes.txt", "w");
-				if(pd==NULL)
-				{
-					printf("Error de fichero\n");
-				}
-				fprintf (pd, "%s", ss);
-				printf ("fichero guardado con exito.\n");
-				fclose (pd);
+				printf ("introduce el mensaje a cifrar (maximo de letras: %d)\n", X);
+				printf ("ADVERTENCIA!! Debes usar el tabulador para indicar el final del mensaje.\n");
+				scanf ("%[^\t]s", s);
 			}
-			if (e == 2)
+			if (h == 2)
 			{
 				printf ("Ok.\n");
 			}
 		}
+	
+	len = strlen(s);
+
+	if (len<X)
+	{
+		//esta es la parte donde se manipula el mensaje
+		while (s[a] != '\0')
+		{
+			if (s[a]== ' ')//cambia los espacios por barras 
+			{
+				s[a] = '/';
+			}
+			if (s[a]>= 'A' && s[a]<= 'Z')//cambia las mayusculas por minusculas
+			{
+				s[a] = s[a] + var; 
+			}
+			a++;
+		}
+		//esta es la parte donde se copian los alfabetos a la matriz
+		for (i=0; i<len; i++)
+		{
+			copia (i, &vector);
+			strcpy (matriz[i].unidad, vector.unidad);
+		}
+		//esta es la parte donde se codifica el mensaje
+		for (i=0; i<len; i++)
+		{
+			if (s[i]>='a' && s[i]<='z')//si la letra esta contenida en el rango del alfabeto, se codifica
+			{
+				n = s[i] - 97;
+				ss[i] = matriz[i-1].unidad[n];
+			}
+			
+			else //si la letra no esta contenida, se deja como esta
+			{
+				ss[i]= s[i];
+			}
+			n=0;
+		}
+		ss[i]= '\0';//se añade manualmente un final de cadena
+		printf ("Mensaje codificado:\n%s\n", ss);
+		//esta es la parte donde se copia (o no) el mensaje a un fichero
+		printf ("\ndesea guardar el mensaje en un fichero?\n");
+		while (e<1||e>2)
+			{
+				printf("1. Si.				2. No\n");
+				scanf ("%i", &e);
+				if (e<1||e>2)
+				{
+					printf ("opcion no valida\n");
+				}
+				if (e == 1)
+				{
+					printf ("guardando fichero...\n");
+					pd = fopen ("mensajes.txt", "w");
+					if(pd==NULL)
+					{
+						printf("Error de fichero\n");
+					}
+					fprintf (pd, "%s", ss);
+					printf ("fichero guardado con exito.\n");
+					fclose (pd);
+				}
+				if (e == 2)
+				{
+					printf ("Ok.\n");
+				}
+			}
+	}
+	else 
+	{
+		printf ("Has excedido el numero maximo de caracteres.\n");
+	}
+}
+
+void decode()
+/*abre el fichero donde estan guardados los alfabetos y los copia a la matriz segun el numero de letras del mensaje.
+Despues, una frase introducida es tratada y decodificada por la funcion. 
+Una vez terminado el proceso, se pregunta al usuario si desea guardar el mensaje en un fichero por si quiere conservarlo*/
+{
+	FILE *pd;
+	char s[X];//mensaje inicial
+	char ss[X];//mensaje codificado
+	int var = 'a'-'A';
+	int n=0;//posicion del alfabeto
+	int e=0;//variable para la eleccion de ficheros
+	int len=0;//valor del numero de letras
+	int i=0;//variable de bucle
+	int a=0;//variable de bucle
+	int d=0;//variable de bucle
+	alfabeto vector;//alfabeto para copiar del fichero
+	alfabeto *pvector = &vector;//puntero al alfabeto
+	alfabeto matriz[X];//matriz de alfabetos
+	//primero, una frase es introducida por el usuario
+	printf ("\n");
+	printf ("introduce el mensaje a cifrar (maximo de letras: %d)\n", X);
+	printf ("ADVERTENCIA!! Debes usar el tabulador para indicar el final del mensaje.\n");
+	scanf ("%[^\t]s", s);
+	len = strlen(s);
+
+	if (len<X)
+	{
+		//esta es la parte donde se manipula el mensaje
+		while (s[a] != '\0')
+		{
+			if (s[a]== '/')//cambia los espacios por barras 
+			{
+				s[a] = ' ';
+			}
+			a++;
+		}
+		//esta es la parte donde se copian los alfabetos a la matriz
+		for (i=0; i<len; i++)
+		{
+			copia (i, &vector);
+			strcpy (matriz[i].unidad, vector.unidad);
+		}
+		//esta es la parte donde se codifica el mensaje
+		for (i=0; i<len; i++)
+		{
+			if (s[i]>='a' && s[i]<='z')//si la letra esta contenida en el rango del alfabeto, se decodifica
+			{
+				while (s[i]!= matriz[i-1].unidad[d])
+				{
+					n++;
+					d++;
+				}
+				ss[i]= d + 97;
+				d=0;
+				n=0;
+			}
+			else //si la letra no esta contenida, se deja como esta
+			{
+				ss[i]= s[i];
+			}
+			n=0;
+		}
+		ss[i]= '\0';//se añade manualmente un final de cadena
+		printf ("Mensaje decodificado:\n%s\n", ss);
+		//esta es la parte donde se copia (o no) el mensaje a un fichero
+		printf ("\ndesea guardar el mensaje en un fichero?\n");
+		while (e<1||e>2)
+			{
+				printf("1. Si.				2. No\n");
+				scanf ("%i", &e);
+				if (e<1||e>2)
+				{
+					printf ("opcion no valida\n");
+				}
+				if (e == 1)
+				{
+					printf ("guardando fichero...\n");
+					pd = fopen ("mensajes.txt", "w");
+					if(pd==NULL)
+					{
+						printf("Error de fichero\n");
+					}
+					fprintf (pd, "%s", ss);
+					printf ("fichero guardado con exito.\n");
+					fclose (pd);
+				}
+				if (e == 2)
+				{
+					printf ("Ok.\n");
+				}
+			}
+	}
+	else 
+	{
+		printf ("Has excedido el numero maximo de caracteres.\n");
+	}
 }
