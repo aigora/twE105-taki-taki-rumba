@@ -72,9 +72,9 @@ para leerlos o copiarlos a una matriz mas tarde*/
 	int d; //variable para el bucle de alfabetos
 	int comp[25]; //matriz auxiliar de comparación de igualdad
 	int i,n; //variables auxiliares
-	printf ("Generando alfabetos...\n");
+	printf ("Generando alfabetos");
 	srand((unsigned)time(NULL));
-	pf=fopen("alfabetos.odt","w");
+	pf=fopen("alfabetos.txt","w");
 	if(pf==NULL){
 		printf("Error de fichero\n");
 		return -1;
@@ -83,6 +83,7 @@ para leerlos o copiarlos a una matriz mas tarde*/
 	{
 		for(a=0; a<X; a++)
 		{
+			printf(".");
 			for(d=0;d<26;d++)//aquí es donde se genera el alfabeto//
 			{
 				n=0;
@@ -117,6 +118,7 @@ para leerlos o copiarlos a una matriz mas tarde*/
 		}
 		fclose(pf);
 	}
+	printf ("\n");
 	printf ("Alfabetos generados con exito.\n\n");
 	return(0);	
 }
@@ -152,6 +154,7 @@ Una vez terminado el proceso, se pregunta al usuario si desea guardar el mensaje
 	int len=0;//valor del numero de letras
 	int i=0;//variable de bucle
 	int a=0;//variable de bucle
+	int o=0;//variable de bucle
 	alfabeto vector;//alfabeto para copiar del fichero
 	alfabeto *pvector = &vector;//puntero al alfabeto
 	alfabeto matriz[X];//matriz de alfabetos
@@ -174,7 +177,15 @@ Una vez terminado el proceso, se pregunta al usuario si desea guardar el mensaje
 			}
 			if (h == 2)
 			{
-				printf ("Ok.\n");
+				printf ("Accediendo al fichero...\n");
+				pd = fopen ("mensajes.txt", "r");
+				while (fscanf(pd, "%c", &s[o])!= EOF)
+				{
+					o++;
+				}
+				s[o]= '\0';
+				printf ("El mensaje: %s\n", s);
+				fclose(pd);
 			}
 		}
 	
@@ -217,7 +228,7 @@ Una vez terminado el proceso, se pregunta al usuario si desea guardar el mensaje
 			n=0;
 		}
 		ss[i]= '\0';//se añade manualmente un final de cadena
-		printf ("Mensaje codificado:\n%s\n", ss);
+		printf ("Mensaje codificado:%s\n", ss);
 		//esta es la parte donde se copia (o no) el mensaje a un fichero
 		printf ("\ndesea guardar el mensaje en un fichero?\n");
 		while (e<1||e>2)
@@ -263,8 +274,10 @@ Una vez terminado el proceso, se pregunta al usuario si desea guardar el mensaje
 	int var = 'a'-'A';
 	int n=0;//posicion del alfabeto
 	int e=0;//variable para la eleccion de ficheros
+	int h=0;//variable para leer o no leer o escribir
 	int len=0;//valor del numero de letras
 	int i=0;//variable de bucle
+	int o=0;//variable de bucle
 	int a=0;//variable de bucle
 	int d=0;//variable de bucle
 	alfabeto vector;//alfabeto para copiar del fichero
@@ -272,9 +285,34 @@ Una vez terminado el proceso, se pregunta al usuario si desea guardar el mensaje
 	alfabeto matriz[X];//matriz de alfabetos
 	//primero, una frase es introducida por el usuario
 	printf ("\n");
-	printf ("introduce el mensaje a cifrar (maximo de letras: %d)\n", X);
-	printf ("ADVERTENCIA!! Debes usar el tabulador para indicar el final del mensaje.\n");
-	scanf ("%[^\t]s", s);
+	printf ("desea introducir el mensaje por el monitor o copiarlo desde un fichero?\n");
+	while (h<1||h>2)	
+		{
+			printf("1. Escribir manual. \t2. Leer fichero.\n");
+			scanf ("%i", &h);
+			if (h<1||h>2)
+			{
+				printf ("opcion no valida\n");
+			}
+			if (h == 1)
+			{
+				printf ("introduce el mensaje a cifrar (maximo de letras: %d)\n", X);
+				printf ("ADVERTENCIA!! Debes usar el tabulador para indicar el final del mensaje.\n");
+				scanf ("%[^\t]s", s);
+			}
+			if (h == 2)
+			{
+				printf ("Accediendo al fichero...\n");
+				pd = fopen ("mensajes.txt", "r");
+				while (fscanf(pd, "%c", &s[o])!= EOF)
+				{
+					o++;
+				}
+				s[o]= '\0';
+				printf ("El mensaje: %s\n\n", s);
+				fclose(pd);
+			}
+		}
 	len = strlen(s);
 
 	if (len<X)
