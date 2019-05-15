@@ -59,6 +59,8 @@ int main()
 			decode();
 			break;
 		}
+	printf ("\n********************FIN DEL PROGRAMA.********************\n");
+	printf ("Creditos: \nJaime Bustillo Ergui.\nNicolas Garcia Romero.\nJesus Marcos Torero.\n");
 }
 
 int rand_alfabetos()
@@ -74,7 +76,7 @@ para leerlos o copiarlos a una matriz mas tarde*/
 	int i,n; //variables auxiliares
 	printf ("Generando alfabetos");
 	srand((unsigned)time(NULL));
-	pf=fopen("alfabetos.txt","w");
+	pf=fopen("alfabetos.odt","w");
 	if(pf==NULL){
 		printf("Error de fichero\n");
 		return -1;
